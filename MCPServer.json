@@ -1,0 +1,143 @@
+{
+  "name": "MCPServer",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "mcp"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d029ffc3-2eae-4061-854e-16b871285b5b",
+      "name": "MCP Server Trigger",
+      "webhookId": "66973d42-c9ff-4291-8d2a-a3fd4b146aaa"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        -60,
+        240
+      ],
+      "id": "f2a012c2-e86c-4620-9cd0-4bf2a6f84fff",
+      "name": "Gmail",
+      "webhookId": "b4d8b390-afb2-40f2-8ddb-32a48a6dfca7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9ztwj1jPWUsohPQN",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        60,
+        240
+      ],
+      "id": "5c4529b0-146d-4107-9ca4-e5181ef9c949",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "name": "Create_Social_Media_Content",
+        "description": "Use this tool and create social media posts.",
+        "workflowId": {
+          "__rl": true,
+          "value": "GkFwLLhUQORb7o0Z",
+          "mode": "list",
+          "cachedResultName": "Social Media Post Genreator"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        200,
+        240
+      ],
+      "id": "327e2256-68eb-4f18-bd2c-5324d0b4d871",
+      "name": "Social Post Generator"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Social Post Generator": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "382e87a7-c835-46be-bbb3-6f528ffe2679",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0f16f6be955dfa47d54e369bb86a24ccafc0e4c9c43278c266efd0e058f0e364"
+  },
+  "id": "FVe8AbaSroTIrtXN",
+  "tags": []
+}

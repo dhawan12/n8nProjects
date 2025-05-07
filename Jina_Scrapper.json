@@ -1,0 +1,166 @@
+{
+  "name": "Jina Scrapper",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "94359ee5-ebf2-4307-9780-1af5f3d437d9",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "position": [
+        -240,
+        180
+      ],
+      "webhookId": "e298fd8c-2af9-4db2-bb8b-94d70fbc2938",
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "content": "## AI Agent Chatbot with Jina.ai Web Scraper\n### https://jina.ai/\n",
+        "height": 700,
+        "width": 680,
+        "color": 5
+      },
+      "id": "3ede7f35-7dc6-4181-aab9-8c22f1402445",
+      "name": "Sticky Note14",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You have access to a powerful scrape_website tool that can retrieve real-time web content. Use this tool to extract any needed information from the website, analyze the data, and craft a clear, accurate, and concise answer to the user's question. Be sure to include relevant details from the scraped content. \n\nUser Question: {{ $json.chatInput }}\n\n",
+        "options": {}
+      },
+      "id": "09113940-bdbc-4a25-bba3-d8fbe67e21cb",
+      "name": "Jina.ai Web Scraping Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        200,
+        180
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        160,
+        500
+      ],
+      "id": "345f3cde-6b41-49a8-a9ae-443285607f99",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "GkqNLGxP1KU0Z83d",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        300,
+        400
+      ],
+      "id": "4c7bd5e5-92b5-45c0-ba9d-cd7cae2a42a1",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Call this tool to scrape a website.  Extract the URL from the user prompt.",
+        "url": "=https://r.jina.ai/{url}",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "url",
+              "description": "User provided website url"
+            }
+          ]
+        }
+      },
+      "id": "e5a5bc62-015a-4d21-bdde-1e48e7aa1f37",
+      "name": "Jina ai Web Scraper Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "position": [
+        620,
+        600
+      ],
+      "typeVersion": 1.1
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Jina.ai Web Scraping Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Jina.ai Web Scraping Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Jina.ai Web Scraping Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jina ai Web Scraper Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Jina.ai Web Scraping Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jina.ai Web Scraping Agent": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d1c9aa9b-b80f-4a35-8dbe-8998e8f7aef6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0f16f6be955dfa47d54e369bb86a24ccafc0e4c9c43278c266efd0e058f0e364"
+  },
+  "id": "t7ZMS8ryNbUrwxHR",
+  "tags": []
+}

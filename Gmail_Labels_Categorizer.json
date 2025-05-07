@@ -1,0 +1,459 @@
+{
+  "name": "Gmail Labels Categorizer",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "id": "dfd36ed1-57fd-46ff-b28b-7d85b197fdd9",
+      "name": "Gmail Trigger",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -260,
+        280
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9ztwj1jPWUsohPQN",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.5
+        }
+      },
+      "id": "1b6a1c4c-e4cf-40fe-a60f-0cbf60f1cce7",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        500
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "6gaVI2yBWzgFDbHe",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_8830237166840941750"
+        ]
+      },
+      "id": "8e6a422b-2730-4824-837d-304108607608",
+      "name": "Sponsorship",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        420,
+        -60
+      ],
+      "webhookId": "0d8a40dc-c007-40e3-ade8-31cf768b571e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9ztwj1jPWUsohPQN",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Other",
+              "description": "For all emails that do not have a defined category or do not match any of the other labels."
+            },
+            {
+              "category": "Mails clients",
+              "description": "For all professional email exchanges with your clients (requests, responses, project follow-ups, etc.)."
+            },
+            {
+              "category": "Newsletters",
+              "description": "Promotional or informational emails received in the form of newsletters."
+            },
+            {
+              "category": "Services en lignes (outil, abonnement)",
+              "description": "Emails related to subscriptions or notifications from online tools you use (such as software, SaaS, or digital services)."
+            },
+            {
+              "category": "Sponsorship",
+              "description": "Used for emails related to sponsorship requests or proposals, financial partnerships, or collaborations where one party funds an action or event in exchange for visibility."
+            },
+            {
+              "category": "Collaboration",
+              "description": "For all exchanges concerning partnership proposals, professional collaborations, or joint projects with other companies, creators, or partners."
+            }
+          ]
+        },
+        "options": {
+          "systemPromptTemplate": "Please classify the text provided by the user into one of the following categories: {categories}, and use the provided formatting instructions below. Don't explain, and only output the json."
+        }
+      },
+      "id": "cb0d3d6c-0c64-44ec-a645-d2b1f13ccd49",
+      "name": "Agent Label",
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_1302876862615087109"
+        ]
+      },
+      "id": "475bfb9c-4c9a-4cb5-91e3-4d8513412367",
+      "name": "Newsletter",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        420,
+        580
+      ],
+      "webhookId": "dfe0fb1d-99ca-4cfb-a226-419ec8df93ca",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9ztwj1jPWUsohPQN",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_6572796451839468989"
+        ]
+      },
+      "id": "ba720e17-8efb-4e15-a83d-6e591a9dc837",
+      "name": "Mail clients",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        420,
+        320
+      ],
+      "webhookId": "dfe0fb1d-99ca-4cfb-a226-419ec8df93ca",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9ztwj1jPWUsohPQN",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_5268756737909482840"
+        ]
+      },
+      "id": "8ab14fd5-1471-4cae-8a46-238ad560e057",
+      "name": "Collaboration",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        420,
+        100
+      ],
+      "webhookId": "dfe0fb1d-99ca-4cfb-a226-419ec8df93ca",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9ztwj1jPWUsohPQN",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_4315265555908826997"
+        ]
+      },
+      "id": "0ab92395-c113-4e53-a7e2-8d8eb635f162",
+      "name": "Services en ligne",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        420,
+        760
+      ],
+      "webhookId": "dfe0fb1d-99ca-4cfb-a226-419ec8df93ca",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9ztwj1jPWUsohPQN",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        920,
+        60
+      ],
+      "id": "f05af98c-c56d-4fc7-bf14-bd831e4fae36",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "SUJET",
+        "message": "VOTRE MESSAGE",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1280,
+        60
+      ],
+      "id": "d98d1c94-05ae-47fe-9fc9-1dd95db37df0",
+      "name": "Gmail",
+      "webhookId": "1c45cd55-efb8-4e2b-9b7c-8c63e3bc27a7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9ztwj1jPWUsohPQN",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"sujet\":\"Sujet du mail\",\n    \"contenu\":\"Le contenu de ce mail\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1200,
+        360
+      ],
+      "id": "e1263669-25ca-48c7-b460-3e109478b623",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        860,
+        340
+      ],
+      "id": "dcff025d-3097-48e0-9bb5-efdd2344ccf4",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "6gaVI2yBWzgFDbHe",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_4360410175462073891"
+        ]
+      },
+      "id": "73e45a1a-d9d0-45f0-a98e-1e531f612ebc",
+      "name": "Others",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        420,
+        960
+      ],
+      "webhookId": "dfe0fb1d-99ca-4cfb-a226-419ec8df93ca",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9ztwj1jPWUsohPQN",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Agent Label",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent Label",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent Label": {
+      "main": [
+        [
+          {
+            "node": "Others",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mail clients",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Newsletter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Services en ligne",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sponsorship",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Collaboration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sponsorship": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collaboration": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mail clients": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "908bcd4d-2bb0-48de-9f4b-24b33e37fc6f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0f16f6be955dfa47d54e369bb86a24ccafc0e4c9c43278c266efd0e058f0e364"
+  },
+  "id": "vvnrQemTqarNqaOO",
+  "tags": []
+}
